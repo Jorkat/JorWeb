@@ -150,6 +150,11 @@
     background: #fff;
 }
 
+.content-glb {
+    border: 1px solid #d3e2eb;
+    background: #fff;
+}
+
 .collapsebutton {
     cursor: pointer;
     float: right;
