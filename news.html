@@ -124,10 +124,10 @@
       <!-- New game launcher -->
 			<div class="content-title" id="New-game-launcher">
 				New game launcher
-				<span id="collapsebutton" class="collapsebutton text-end">+</span>
+				<span id="collapsebutton" class="collapsebutton text-end" data-target="contentCollapse1">+</span>
 			</div>
     
-			<div class="collapse" id="contentCollapse">
+			<div class="collapse contentCollapse" id="contentCollapse1">
 				<div class="content">
 					<p>Visitors, </p><br />
           We are proud to announce that we've released a new game launcher for our game.<br />
@@ -140,10 +140,10 @@
       <!-- LunaROSE v1 -->
 			<div class="content-title mt-3" id="LunaROSE-v1">
 				LunaROSE v1
-				<span id="collapsebutton" class="collapsebutton text-end">+</span>
+				<span id="collapsebutton " class="collapsebutton text-end" data-target="contentCollapse2">+</span>
 			</div>
     
-			<div class="collapse" id="contentCollapse">
+			<div class="collapse contentCollapse" id="contentCollapse2">
 				<div class="content">
 					<strong>Patch Notes:</strong>
 					
@@ -200,24 +200,36 @@
         <!-- Core theme JS-->
 		<script>
 			document.addEventListener("DOMContentLoaded", function() {
-				var collapseElement = document.getElementById("contentCollapse");
-				var button = document.getElementById('collapsebutton');
+    // Get all elements with the class 'collapsebutton'
+    var buttons = document.querySelectorAll('.collapsebutton');
 
-				// Automatically show the content and update the button text
-				collapseElement.classList.add('show');
-				button.textContent = '-';
+    buttons.forEach(function(button, index) {
+        // Get the associated content element using data attribute
+        var collapseElement = document.getElementById(button.getAttribute('data-target'));
 
-				// Toggle collapse on button click
-				button.addEventListener('click', function () {
-				if (collapseElement.classList.contains('show')) {
-					collapseElement.classList.remove('show');
-					button.textContent = '+';
-				} else {
-					collapseElement.classList.add('show');
-					button.textContent = '-';
-				}
-				});
-			});
+        // Automatically show the content for the first button only and update its button text
+        if (index === 0) {
+            collapseElement.classList.add('show');
+            button.textContent = '-';
+        } else {
+            button.textContent = '+';
+        }
+
+        // Toggle collapse on button click
+        button.addEventListener('click', function () {
+            if (collapseElement.classList.contains('show')) {
+                collapseElement.classList.remove('show');
+                button.textContent = '+';
+            } else {
+                collapseElement.classList.add('show');
+                button.textContent = '-';
+            }
+        });
+    });
+});
+
+
+
 		</script>
 
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
