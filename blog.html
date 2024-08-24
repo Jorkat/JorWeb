@@ -119,83 +119,94 @@
             </div>
         </header>
         <section class="bg-light py-5 border-bottom" id="features">
-		<div class="container">
+    <div class="container">
         <!-- LunaROSE Custom Plains Map -->
-			<div class="content-title">
-				LunaROSE Custom Plains Map
-				<span id="collapsebutton" class="collapsebutton text-end">+</span>
-			</div>
-    
-			<div class="collapse" id="contentCollapse">
-				<div class="content">
-					<script type="module">
-        import * as THREE from 'https://cdn.skypack.dev/three@0.132.2/build/three.module.js';
-        import { GLTFLoader } from 'https://cdn.skypack.dev/three@0.132.2/examples/jsm/loaders/GLTFLoader.js';
-        import { OrbitControls } from 'https://cdn.skypack.dev/three@0.132.2/examples/jsm/controls/OrbitControls.js';
+        <div class="content-title">
+            LunaROSE Custom Plains Map
+            <span id="collapsebutton" class="collapsebutton text-end">-</span>
+        </div>
 
-        // Basic Three.js setup
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.physicallyCorrectLights = true; // Correct lighting for PBR materials
-        renderer.outputEncoding = THREE.sRGBEncoding; // Accurate color rendering
+        <div class="collapse show" id="contentCollapse">
+            <div class="content-glb" id="glbViewerContainer" style="position: relative; width: 100%; height: 500px;">
+                <script type="module">
+                    import * as THREE from 'https://cdn.skypack.dev/three@0.132.2/build/three.module.js';
+                    import { GLTFLoader } from 'https://cdn.skypack.dev/three@0.132.2/examples/jsm/loaders/GLTFLoader.js';
+                    import { OrbitControls } from 'https://cdn.skypack.dev/three@0.132.2/examples/jsm/controls/OrbitControls.js';
 
-        renderer.setClearColor(0xe0f7fa); // Light grey background
+                    // Basic Three.js setup
+                    const scene = new THREE.Scene();
+                    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                    const renderer = new THREE.WebGLRenderer({ antialias: true });
+                    const container = document.getElementById('glbViewerContainer'); // GLB viewer container
 
-        document.body.appendChild(renderer.domElement);
+                    // Set the renderer size to the container's width and height
+                    renderer.setSize(container.clientWidth, container.clientHeight);
+                    renderer.physicallyCorrectLights = true; // Correct lighting for PBR materials
+                    renderer.outputEncoding = THREE.sRGBEncoding; // Accurate color rendering
+                    renderer.setClearColor(0xe0f7fa); // Light grey background
+                    container.appendChild(renderer.domElement); // Append renderer to the container
 
-        // Add OrbitControls
-        const controls = new OrbitControls(camera, renderer.domElement);
+                    // Add OrbitControls
+                    const controls = new OrbitControls(camera, renderer.domElement);
 
-        // Add Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff); // Soft white light
-        scene.add(ambientLight);
+                    // Add Lighting
+                    const ambientLight = new THREE.AmbientLight(0xffffff); // Soft white light
+                    scene.add(ambientLight);
 
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 2); // Increased intensity
-        directionalLight.position.set(5, 5, 5).normalize();
-        scene.add(directionalLight);
+                    const directionalLight = new THREE.DirectionalLight(0xffffff, 2); // Increased intensity
+                    directionalLight.position.set(5, 5, 5).normalize();
+                    scene.add(directionalLight);
 
-        // Optional: Add SpotLight
-        const spotLight = new THREE.SpotLight(0xffffff, 5);
-        spotLight.position.set(10, 10, 10);
-        spotLight.angle = Math.PI / 0,1;
-        spotLight.penumbra = 0.1;
-        spotLight.decay = 2;
-        spotLight.distance = 2000;
-        scene.add(spotLight);
+                    // Optional: Add SpotLight
+                    const spotLight = new THREE.SpotLight(0xffffff, 5);
+                    spotLight.position.set(10, 10, 10);
+                    spotLight.angle = Math.PI / 0.1;
+                    spotLight.penumbra = 0.1;
+                    spotLight.decay = 2;
+                    spotLight.distance = 2000;
+                    scene.add(spotLight);
 
-        // Create a GLTFLoader instance
-        const loader = new GLTFLoader();
+                    // Create a GLTFLoader instance
+                    const loader = new GLTFLoader();
 
-        // Load the .glb model
-        loader.load('assets/3D-model/plains.glb', function (gltf) {
-            // Traverse the model and add it to the scene
-            gltf.scene.traverse((child) => {
-                if (child.isMesh) {
-                    // Use the model’s existing materials, ensuring textures are preserved
-                    child.material = child.material; // Ensure original material with textures is used
-                }
-            });
-            scene.add(gltf.scene);
-            animate();
-        }, undefined, function (error) {
-            console.error('An error occurred:', error);
-        });
+                    // Load the .glb model
+                    loader.load('assets/3D-model/plains.glb', function (gltf) {
+                        // Traverse the model and add it to the scene
+                        gltf.scene.traverse((child) => {
+                            if (child.isMesh) {
+                                // Use the model’s existing materials, ensuring textures are preserved
+                                child.material = child.material; // Ensure original material with textures is used
+                            }
+                        });
+                        scene.add(gltf.scene);
+                        animate();
+                    }, undefined, function (error) {
+                        console.error('An error occurred:', error);
+                    });
 
-        camera.position.set(0, 1, 5);
+                    camera.position.set(0, 1, 5);
 
-        function animate() {
-            requestAnimationFrame(animate);
-            controls.update(); // Required for OrbitControls
-            renderer.render(scene, camera);
-        }
-    </script>
-				</div>
-			</div>
-                                        
-		</div>
-		</section>
+                    function animate() {
+                        requestAnimationFrame(animate);
+                        controls.update(); // Required for OrbitControls
+                        renderer.render(scene, camera);
+                    }
+
+                    // Update canvas size on window resize
+                    window.addEventListener('resize', function() {
+                        const width = container.clientWidth;
+                        const height = container.clientHeight;
+                        renderer.setSize(width, height);
+                        camera.aspect = width / height;
+                        camera.updateProjectionMatrix();
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</section>
+
+
         <!-- Footer-->
         <footer class="bg-lunarose-blue py-5">
             <div class="container px-5"><p class="m-0 text-center text-lunarose-blue">Copyright &copy; LunaROSE 2023</p></div>
